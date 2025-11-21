@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509976892372",
+    "project_id": "wellness-diary-81a92",
+    "storage_bucket": "wellness-diary-81a92.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509976892372:android:1a44e02849e4814647fc41",
+        "android_client_info": {
+          "package_name": "com.example.wellness_diary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmTReqeMy3fOr028jKMIhk9xV2HGCzWQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

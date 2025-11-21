@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:wellness_diary/config/firebase_config.dart';
+import 'package:wellness_diary/firebase_options.dart';
 import 'package:wellness_diary/models/health_vital_model.dart';
 import 'package:wellness_diary/models/medicine_model.dart';
 import 'package:wellness_diary/models/mood_model.dart';
@@ -18,24 +18,18 @@ class FirebaseService {
   static Future<void> initialize() async {
     try {
       await Firebase.initializeApp(
-        options: const FirebaseOptions(
-          apiKey: FirebaseConfig.apiKey,
-          authDomain: FirebaseConfig.authDomain,
-          projectId: FirebaseConfig.projectId,
-          storageBucket: FirebaseConfig.storageBucket,
-          messagingSenderId: FirebaseConfig.messagingSenderId,
-          appId: FirebaseConfig.appId,
-        ),
+        options: DefaultFirebaseOptions.currentPlatform,
       );
       _firestore = FirebaseFirestore.instance;
+      print('✅ Firebase initialized successfully');
     } catch (e) {
       // If Firebase is not configured, we'll use local storage only
-      print('Firebase initialization failed: $e');
-      print('App will continue with local storage only.');
+      print('⚠️ Firebase initialization failed: $e');
+      print('📱 App will continue with local storage only.');
     }
   }
 
-  static bool get isInitialized => _firestore != null && FirebaseConfig.apiKey != "YOUR_API_KEY_HERE";
+  static bool get isInitialized => _firestore != null;
 
   // Moods Collection
   static CollectionReference<Map<String, dynamic>> moodsCollection(String userId) {
