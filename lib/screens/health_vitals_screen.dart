@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wellness_diary/providers/auth_provider.dart';
 import 'package:wellness_diary/providers/health_vital_provider.dart';
 import 'package:wellness_diary/models/health_vital_model.dart';
 import 'package:wellness_diary/utils/app_theme.dart';
@@ -335,7 +336,7 @@ class _HealthVitalsScreenState extends State<HealthVitalsScreen> {
     );
   }
 
-  void _showAddVitalDialog() {
+  Future<void> _showAddVitalDialog() async {
     _valueController.clear();
     _noteController.clear();
 
@@ -377,7 +378,7 @@ class _HealthVitalsScreenState extends State<HealthVitalsScreen> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               final value = double.tryParse(_valueController.text);
               if (value == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -398,10 +399,12 @@ class _HealthVitalsScreenState extends State<HealthVitalsScreen> {
 
               _valueController.clear();
               _noteController.clear();
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Vital logged successfully!')),
-              );
+              if (context.mounted) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Vital logged successfully!')),
+                );
+              }
             },
             child: const Text('Save'),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wellness_diary/providers/auth_provider.dart';
 import 'package:wellness_diary/providers/medicine_provider.dart';
 import 'package:wellness_diary/models/medicine_model.dart';
 import 'package:wellness_diary/utils/app_theme.dart';
@@ -317,15 +318,15 @@ class _MedicineScheduleScreenState extends State<MedicineScheduleScreen> {
     );
   }
 
-  void _showAddMedicineDialog(BuildContext context) {
-    _showMedicineDialog(context);
+  Future<void> _showAddMedicineDialog(BuildContext context) async {
+    await _showMedicineDialog(context);
   }
 
-  void _showEditMedicineDialog(BuildContext context, MedicineModel medicine) {
-    _showMedicineDialog(context, medicine: medicine);
+  Future<void> _showEditMedicineDialog(BuildContext context, MedicineModel medicine) async {
+    await _showMedicineDialog(context, medicine: medicine);
   }
 
-  void _showMedicineDialog(BuildContext context, {MedicineModel? medicine}) {
+  Future<void> _showMedicineDialog(BuildContext context, {MedicineModel? medicine}) async {
     final nameController = TextEditingController(text: medicine?.name ?? '');
     final dosageController = TextEditingController(text: medicine?.dosage ?? '');
     final noteController = TextEditingController(text: medicine?.note ?? '');
@@ -443,7 +444,7 @@ class _MedicineScheduleScreenState extends State<MedicineScheduleScreen> {
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (nameController.text.isEmpty || dosageController.text.isEmpty || times.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Please fill all required fields')),
@@ -482,14 +483,16 @@ class _MedicineScheduleScreenState extends State<MedicineScheduleScreen> {
                   await provider.updateMedicine(updated, userId: userId);
                 }
 
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(medicine == null
-                        ? 'Medicine added successfully!'
-                        : 'Medicine updated successfully!'),
-                  ),
-                );
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(medicine == null
+                          ? 'Medicine added successfully!'
+                          : 'Medicine updated successfully!'),
+                    ),
+                  );
+                }
               },
               child: Text(medicine == null ? 'Add' : 'Update'),
             ),

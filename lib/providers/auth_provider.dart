@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../models/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final Box<UserModel> _userBox = Hive.box<UserModel>('users');
+  late final Box<UserModel> _userBox = Hive.box<UserModel>('users');
   final Uuid _uuid = const Uuid();
   UserModel? _currentUser;
 
