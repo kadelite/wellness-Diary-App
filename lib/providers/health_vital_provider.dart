@@ -48,7 +48,12 @@ class HealthVitalProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print('Error syncing from Firebase: $e');
+      // Only log non-permission errors
+      final errorString = e.toString().toLowerCase();
+      if (!errorString.contains('permission-denied') && 
+          !errorString.contains('permission denied')) {
+        print('Error syncing from Firebase: $e');
+      }
       _loadVitalsFromLocal();
     }
   }
@@ -64,7 +69,12 @@ class HealthVitalProvider extends ChangeNotifier {
         notifyListeners();
       },
       onError: (error) {
-        print('Firestore stream error: $error');
+        // Only log non-permission errors
+        final errorString = error.toString().toLowerCase();
+        if (!errorString.contains('permission-denied') && 
+            !errorString.contains('permission denied')) {
+          print('Firestore stream error: $error');
+        }
         _loadVitalsFromLocal();
       },
     );
@@ -157,7 +167,12 @@ class HealthVitalProvider extends ChangeNotifier {
       try {
         await FirebaseService.addHealthVital(userId, newVital);
       } catch (e) {
-        print('Error syncing to Firebase: $e');
+        // Only log non-permission errors
+        final errorString = e.toString().toLowerCase();
+        if (!errorString.contains('permission-denied') && 
+            !errorString.contains('permission denied')) {
+          print('Error syncing to Firebase: $e');
+        }
       }
     }
   }
@@ -177,7 +192,12 @@ class HealthVitalProvider extends ChangeNotifier {
       try {
         await FirebaseService.updateHealthVital(userId, vital);
       } catch (e) {
-        print('Error syncing to Firebase: $e');
+        // Only log non-permission errors
+        final errorString = e.toString().toLowerCase();
+        if (!errorString.contains('permission-denied') && 
+            !errorString.contains('permission denied')) {
+          print('Error syncing to Firebase: $e');
+        }
       }
     }
   }

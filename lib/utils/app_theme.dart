@@ -19,9 +19,17 @@ class AppTheme {
   static const Color textSecondaryDark = Color(0xFFB8B8B8);
 
   static ThemeData get lightTheme {
+    // Get Noto Sans font family for fallback
+    final notoSansFamily = GoogleFonts.notoSans().fontFamily;
+    
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      fontFamilyFallback: [
+        if (notoSansFamily != null) notoSansFamily,
+        'Noto Sans',
+        'sans-serif',
+      ],
       colorScheme: ColorScheme.light(
         primary: primaryBlue,
         secondary: primaryGreen,
@@ -107,9 +115,17 @@ class AppTheme {
   }
 
   static ThemeData get darkTheme {
+    // Get Noto Sans font family for fallback
+    final notoSansFamily = GoogleFonts.notoSans().fontFamily;
+    
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      fontFamilyFallback: [
+        if (notoSansFamily != null) notoSansFamily,
+        'Noto Sans',
+        'sans-serif',
+      ],
       colorScheme: ColorScheme.dark(
         primary: primaryBlue,
         secondary: primaryGreen,

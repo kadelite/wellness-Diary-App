@@ -46,7 +46,12 @@ class MoodProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print('Error syncing from Firebase: $e');
+      // Only log non-permission errors
+      final errorString = e.toString().toLowerCase();
+      if (!errorString.contains('permission-denied') && 
+          !errorString.contains('permission denied')) {
+        print('Error syncing from Firebase: $e');
+      }
       _loadMoodsFromLocal();
     }
   }
@@ -62,7 +67,12 @@ class MoodProvider extends ChangeNotifier {
         notifyListeners();
       },
       onError: (error) {
-        print('Firestore stream error: $error');
+        // Only log non-permission errors
+        final errorString = error.toString().toLowerCase();
+        if (!errorString.contains('permission-denied') && 
+            !errorString.contains('permission denied')) {
+          print('Firestore stream error: $error');
+        }
         _loadMoodsFromLocal();
       },
     );
@@ -142,7 +152,12 @@ class MoodProvider extends ChangeNotifier {
       try {
         await FirebaseService.addMood(userId, newMood);
       } catch (e) {
-        print('Error syncing to Firebase: $e');
+        // Only log non-permission errors
+        final errorString = e.toString().toLowerCase();
+        if (!errorString.contains('permission-denied') && 
+            !errorString.contains('permission denied')) {
+          print('Error syncing to Firebase: $e');
+        }
       }
     }
   }
@@ -162,7 +177,12 @@ class MoodProvider extends ChangeNotifier {
       try {
         await FirebaseService.updateMood(userId, mood);
       } catch (e) {
-        print('Error syncing to Firebase: $e');
+        // Only log non-permission errors
+        final errorString = e.toString().toLowerCase();
+        if (!errorString.contains('permission-denied') && 
+            !errorString.contains('permission denied')) {
+          print('Error syncing to Firebase: $e');
+        }
       }
     }
   }

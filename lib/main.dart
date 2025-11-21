@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -27,11 +27,24 @@ void main() async {
   // Initialize Hive (local storage - always used as backup)
   await Hive.initFlutter();
   
-  // Register Hive adapters
+  // Register Hive adapters (order matters - register dependencies first)
   Hive.registerAdapter(MoodModelAdapter());
+  Hive.registerAdapter(VitalTypeAdapter()); // Must be registered before HealthVitalModelAdapter
   Hive.registerAdapter(HealthVitalModelAdapter());
+  Hive.registerAdapter(TimeOfDayModelAdapter()); // Must be registered before MedicineModelAdapter
   Hive.registerAdapter(MedicineModelAdapter());
   Hive.registerAdapter(UserModelAdapter());
+  
+  // Verify adapters are registered (for debugging)
+  if (kDebugMode) {
+    print('✅ Hive adapters registered:');
+    print('   - MoodModelAdapter (typeId: 0)');
+    print('   - VitalTypeAdapter (typeId: 2)');
+    print('   - HealthVitalModelAdapter (typeId: 1)');
+    print('   - TimeOfDayModelAdapter (typeId: 4)');
+    print('   - MedicineModelAdapter (typeId: 3)');
+    print('   - UserModelAdapter');
+  }
   
   // Open Hive boxes
   await Hive.openBox<MoodModel>('moods');
